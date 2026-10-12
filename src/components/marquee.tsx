@@ -63,7 +63,7 @@ const Marquee = async () => {
   if (!products.length) return null;
 
   return (
-    <div className="marquee-viewport w-full bg-emerald-50/50 border-y border-emerald-100/70 py-2 text-gray-800">
+    <div className="marquee-viewport w-full bg-[var(--brand-green-soft)] border-y border-[var(--brand-green-border)] py-2 text-gray-800">
       <div className="flex whitespace-nowrap animate-marquee items-center">
         {[...products, ...products].map((item, index) => {
           const pct = item.change?.pct ?? 0;
@@ -86,7 +86,7 @@ const Marquee = async () => {
               <span
                 className={`flex items-center text-xs font-bold px-1.5 py-0.5 rounded ${
                   isUp
-                    ? "text-emerald-700 bg-emerald-100/80"
+                    ? "text-[var(--brand-green)] bg-[var(--brand-green-muted)]"
                     : isDown
                       ? "text-rose-600 bg-rose-100/80"
                       : "text-gray-600 bg-gray-100"

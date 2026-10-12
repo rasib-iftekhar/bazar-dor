@@ -70,7 +70,7 @@ const ProductCard = ({ product }: { product: Product }) => {
             {product.image || product.categoryIcon}
           </div>
           <div>
-            <h3 className="font-bold text-gray-900 text-base leading-snug group-hover:text-emerald-600 transition-colors">
+            <h3 className="font-bold text-gray-900 text-base leading-snug group-hover:text-[var(--brand-green)] transition-colors">
               {product.nameBn}
             </h3>
             <p className="text-gray-400 text-xs mt-0.5">
@@ -92,7 +92,7 @@ const ProductCard = ({ product }: { product: Product }) => {
         <span
           className={`inline-flex items-center text-xs font-semibold px-2 py-1 rounded-md ${
             isUp
-              ? "text-emerald-700 bg-emerald-50"
+              ? "text-[var(--brand-green)] bg-[var(--brand-green-soft)]"
               : isDown
                 ? "text-rose-600 bg-rose-50"
                 : "text-gray-600 bg-gray-50"
@@ -173,7 +173,7 @@ function CategoryPageContent({
         </p>
         <Link
           href="/"
-          className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-xl transition-colors shadow-sm"
+          className="px-6 py-3 bg-[var(--brand-green)] hover:bg-[var(--brand-green-hover)] text-white font-medium rounded-xl transition-colors shadow-sm"
         >
           হোম পেজে ফিরে যান
         </Link>

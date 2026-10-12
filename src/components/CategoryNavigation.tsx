@@ -30,7 +30,7 @@ function CategoryLinks({
             aria-current={isActive ? "page" : undefined}
             className={`flex items-center gap-2 cursor-pointer px-3 py-1.5 rounded-xl transition-colors whitespace-nowrap ${
               isActive
-                ? "bg-emerald-700 text-white hover:bg-emerald-800 hover:text-white"
+                ? "bg-[var(--brand-green)] text-white hover:bg-[var(--brand-green-hover)] hover:text-white"
                 : "text-gray-700 hover:bg-gray-200 hover:text-gray-900"
             }`}
           >

@@ -22,7 +22,7 @@ const ProductCard = ({ product }: { product: Product }) => {
             {product.image || product.categoryIcon}
           </div>
           <div>
-            <h3 className="font-bold text-gray-900 text-base leading-snug group-hover:text-emerald-600 transition-colors">
+            <h3 className="font-bold text-gray-900 text-base leading-snug group-hover:text-[var(--brand-green)] transition-colors">
               {product.nameBn}
             </h3>
             <p className="text-gray-400 text-xs mt-0.5">
@@ -44,7 +44,7 @@ const ProductCard = ({ product }: { product: Product }) => {
         <span
           className={`inline-flex items-center text-xs font-semibold px-2 py-1 rounded-md ${
             isUp
-              ? "text-emerald-700 bg-emerald-50"
+              ? "text-[var(--brand-green)] bg-[var(--brand-green-soft)]"
               : isDown
                 ? "text-rose-600 bg-rose-50"
                 : "text-gray-600 bg-gray-50"
@@ -134,7 +134,7 @@ export default function HomePage() {
         {/* Hero Section */}
         <section className="bg-white rounded-3xl p-6 sm:p-10 border border-gray-100 shadow-sm flex flex-col md:flex-row items-center justify-between gap-8">
           <div className="flex-1 space-y-4">
-            <span className="inline-block px-3.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
+            <span className="inline-block px-3.5 py-1 rounded-full text-xs font-semibold bg-[var(--brand-green-soft)] text-[var(--brand-green)]">
               <CurrentDate />
             </span>
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 leading-tight">
@@ -147,7 +147,7 @@ export default function HomePage() {
             <div className="pt-2">
               <a
                 href="#সব-পণ্য"
-                className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold transition-colors shadow-sm"
+                className="inline-flex items-center justify-center px-6 py-3 rounded-xl bg-[var(--brand-green)] hover:bg-[var(--brand-green-hover)] text-white font-semibold transition-colors shadow-sm"
               >
                 সব পণ্য দেখুন
               </a>
@@ -169,7 +169,9 @@ export default function HomePage() {
         {/* Section A — আজ দাম বেড়েছে ▲ */}
         <section className="space-y-4">
           <div className="flex items-center gap-2">
-            <span className="text-emerald-600 font-bold text-xl">▲</span>
+            <span className="text-[var(--brand-green)] font-bold text-xl">
+              ▲
+            </span>
             <h2 className="text-xl font-bold text-gray-900">আজ দাম বেড়েছে</h2>
           </div>
           {loading ? (

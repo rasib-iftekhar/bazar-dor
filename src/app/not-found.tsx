@@ -17,7 +17,7 @@ export default function NotFound() {
       <div className="flex flex-wrap items-center justify-center gap-3">
         <Link
           href="/"
-          className="bg-emerald-700 hover:bg-emerald-800 text-white font-medium px-5 py-2.5 rounded-lg transition-colors shadow-sm text-sm sm:text-base"
+          className="bg-[var(--brand-green)] hover:bg-[var(--brand-green-hover)] text-white font-medium px-5 py-2.5 rounded-lg transition-colors shadow-sm text-sm sm:text-base"
         >
           হোম পেজে যান
         </Link>

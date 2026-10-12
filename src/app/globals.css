@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+:root {
+	--brand-green: #078747;
+	--brand-green-hover: #066f3b;
+	--brand-green-soft: #e8f4ec;
+	--brand-green-muted: #d9ecdf;
+	--brand-green-border: #c9e3d1;
+	--brand-green-ring: rgba(7, 135, 71, 0.15);
+}
+
 @keyframes marquee {
 	to {
 		transform: translateX(-50%);
