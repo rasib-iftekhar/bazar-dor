@@ -60,6 +60,38 @@ const ProductCard = ({ product }: { product: Product }) => {
   );
 };
 
+const ProductGridSkeleton = () => (
+  <div
+    role="status"
+    aria-label="পণ্য লোড হচ্ছে"
+    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+  >
+    {Array.from({ length: 6 }, (_, index) => (
+      <div
+        key={index}
+        aria-hidden="true"
+        className="min-h-[148px] bg-white rounded-2xl p-5 border border-gray-100/80 shadow-sm motion-safe:animate-pulse"
+      >
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-12 h-12 rounded-xl bg-gray-200 shrink-0" />
+          <div className="flex-1 space-y-2">
+            <div className="h-4 w-28 rounded bg-gray-200" />
+            <div className="h-3 w-16 rounded bg-gray-100" />
+          </div>
+        </div>
+        <div className="pt-3 border-t border-gray-100 flex items-end justify-between">
+          <div className="space-y-2">
+            <div className="h-3 w-16 rounded bg-gray-100" />
+            <div className="h-5 w-24 rounded bg-gray-200" />
+          </div>
+          <div className="h-6 w-14 rounded-md bg-gray-100" />
+        </div>
+      </div>
+    ))}
+    <span className="sr-only">পণ্য লোড হচ্ছে</span>
+  </div>
+);
+
 export default function HomePage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [sortOrder, setSortOrder] = useState("default");
@@ -141,7 +173,7 @@ export default function HomePage() {
             <h2 className="text-xl font-bold text-gray-900">আজ দাম বেড়েছে</h2>
           </div>
           {loading ? (
-            <div className="text-gray-500 text-sm">Loading...</div>
+            <ProductGridSkeleton />
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {topRisers.map((product) => (
@@ -158,7 +190,7 @@ export default function HomePage() {
             <h2 className="text-xl font-bold text-gray-900">আজ দাম কমেছে</h2>
           </div>
           {loading ? (
-            <div className="text-gray-500 text-sm">Loading...</div>
+            <ProductGridSkeleton />
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {topFallers.map((product) => (
@@ -194,7 +226,7 @@ export default function HomePage() {
           </div>
 
           {loading ? (
-            <div className="text-gray-500 text-sm py-8">লোড হচ্ছে...</div>
+            <ProductGridSkeleton />
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {sortedProducts.map((product) => (
