@@ -86,9 +86,9 @@ const Marquee = async () => {
               <span
                 className={`flex items-center text-xs font-bold px-1.5 py-0.5 rounded ${
                   isUp
-                    ? "text-[var(--brand-green)] bg-[var(--brand-green-muted)]"
+                    ? "text-rose-600 bg-rose-100/80"
                     : isDown
-                      ? "text-rose-600 bg-rose-100/80"
+                      ? "text-[var(--brand-green)] bg-[var(--brand-green-muted)]"
                       : "text-gray-600 bg-gray-100"
                 }`}
               >

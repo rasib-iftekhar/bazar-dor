@@ -37,7 +37,9 @@ async function ProductDetailContent({
   const session = await auth.api.getSession({ headers: requestHeaders });
 
   if (!session) {
-    redirect(`/signin?callbackURL=${encodeURIComponent(`/product/${slug}`)}`);
+    redirect(
+      `/signin?callbackURL=${encodeURIComponent(`/product/${slug}`)}&notice=product-protected`,
+    );
   }
 
   const response = await fetch(
@@ -103,9 +105,9 @@ async function ProductDetailContent({
               <p
                 className={`mt-1 text-sm font-medium ${
                   isUp
-                    ? "text-[var(--brand-green)]"
+                    ? "text-rose-600"
                     : isDown
-                      ? "text-rose-600"
+                      ? "text-[var(--brand-green)]"
                       : "text-gray-600"
                 }`}
               >
@@ -128,9 +130,9 @@ async function ProductDetailContent({
             <span
               className={`mt-1 text-sm font-semibold ${
                 isUp
-                  ? "text-[var(--brand-green)]"
+                  ? "text-rose-600"
                   : isDown
-                    ? "text-rose-600"
+                    ? "text-[var(--brand-green)]"
                     : "text-gray-500"
               }`}
             >
@@ -164,7 +166,8 @@ async function ProductDetailContent({
             <div className="rounded-lg border border-gray-200 bg-white p-4">
               <p className="text-sm text-gray-600">গড় দাম</p>
               <p className="mt-1 text-xl font-bold text-[var(--brand-green)]">
-                {toBengaliNumber(((lowestPrice+highestPrice) / 2).toFixed(1))} টাকা
+                {toBengaliNumber(((lowestPrice + highestPrice) / 2).toFixed(1))}{" "}
+                টাকা
               </p>
               <p className="text-sm text-gray-500">
                 প্রতি {getUnitBn(product.unit)}

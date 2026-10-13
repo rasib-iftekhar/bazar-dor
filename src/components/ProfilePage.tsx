@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState, type FormEvent } from "react";
+import toast from "react-hot-toast";
 import { authClient } from "@/lib/auth-client";
 
 export default function ProfilePage() {
@@ -12,7 +13,7 @@ export default function ProfilePage() {
 
   useEffect(() => {
     if (!isPending && !session) {
-      router.replace("/signin?callbackURL=%2Fprofile");
+      router.replace("/signin?callbackURL=%2Fprofile&notice=profile-protected");
     }
   }, [isPending, router, session]);
 
@@ -22,7 +23,9 @@ export default function ProfilePage() {
     const name = String(formData.get("name")).trim();
 
     if (!name) {
-      setNotice("নাম লিখুন।");
+      const message = "নাম লিখুন।";
+      setNotice(message);
+      toast.error(message);
       return;
     }
 
@@ -31,18 +34,32 @@ export default function ProfilePage() {
 
     try {
       const { error } = await authClient.updateUser({ name });
-      setNotice(error?.message || "প্রোফাইল আপডেট হয়েছে।");
+      const message = error?.message || "প্রোফাইল আপডেট হয়েছে।";
+      setNotice(message);
+      if (error) toast.error(message);
+      else toast.success(message);
     } catch {
-      setNotice("প্রোফাইল আপডেট করা যায়নি। আবার চেষ্টা করুন।");
+      const message = "প্রোফাইল আপডেট করা যায়নি। আবার চেষ্টা করুন।";
+      setNotice(message);
+      toast.error(message);
     } finally {
       setIsSaving(false);
     }
   }
 
   async function handleSignOut() {
-    await authClient.signOut();
-    router.replace("/signin");
-    router.refresh();
+    try {
+      const { error } = await authClient.signOut();
+      if (error) {
+        toast.error(error.message || "সাইন আউট করা যায়নি।");
+        return;
+      }
+      toast.success("সাইন আউট সফল হয়েছে।");
+      router.replace("/signin");
+      router.refresh();
+    } catch {
+      toast.error("সাইন আউট করা যায়নি। আবার চেষ্টা করুন।");
+    }
   }
 
   if (isPending || !session) {

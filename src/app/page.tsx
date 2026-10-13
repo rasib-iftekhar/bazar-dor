@@ -44,9 +44,9 @@ const ProductCard = ({ product }: { product: Product }) => {
         <span
           className={`inline-flex items-center text-xs font-semibold px-2 py-1 rounded-md ${
             isUp
-              ? "text-[var(--brand-green)] bg-[var(--brand-green-soft)]"
+              ? "text-rose-600 bg-rose-50"
               : isDown
-                ? "text-rose-600 bg-rose-50"
+                ? "text-[var(--brand-green)] bg-[var(--brand-green-soft)]"
                 : "text-gray-600 bg-gray-50"
           }`}
         >
@@ -169,7 +169,7 @@ export default function HomePage() {
         {/* Section A — আজ দাম বেড়েছে ▲ */}
         <section className="space-y-4">
           <div className="flex items-center gap-2">
-            <span className="text-[var(--brand-green)] font-bold text-xl">
+            <span className="text-rose-600 font-bold text-xl">
               ▲
             </span>
             <h2 className="text-xl font-bold text-gray-900">আজ দাম বেড়েছে</h2>
@@ -188,7 +188,7 @@ export default function HomePage() {
         {/* Section B — আজ দাম কমেছে ▼ */}
         <section className="space-y-4">
           <div className="flex items-center gap-2">
-            <span className="text-rose-600 font-bold text-xl">▼</span>
+            <span className="text-[var(--brand-green)] font-bold text-xl">▼</span>
             <h2 className="text-xl font-bold text-gray-900">আজ দাম কমেছে</h2>
           </div>
           {loading ? (

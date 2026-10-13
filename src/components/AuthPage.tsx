@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { useState, type FormEvent } from "react";
+import toast from "react-hot-toast";
 import { authClient } from "@/lib/auth-client";
 
 type AuthMode = "signin" | "signup";
@@ -26,6 +27,12 @@ function getCallbackURL() {
   }
 }
 
+function addCallbackNotice(callbackURL: string, notice: string) {
+  const destination = new URL(callbackURL, window.location.origin);
+  destination.searchParams.set("notice", notice);
+  return `${destination.pathname}${destination.search}${destination.hash}`;
+}
+
 export default function AuthPage({ mode }: { mode: AuthMode }) {
   const isSignup = mode === "signup";
   const [notice, setNotice] = useState("");
@@ -40,7 +47,9 @@ export default function AuthPage({ mode }: { mode: AuthMode }) {
       isSignup &&
       formData.get("password") !== formData.get("confirmPassword")
     ) {
-      setNotice("পাসওয়ার্ড দুটি মিলছে না।");
+      const message = "পাসওয়ার্ড দুটি মিলছে না।";
+      setNotice(message);
+      toast.error(message, { id: "auth-validation" });
       return;
     }
 
@@ -61,29 +70,53 @@ export default function AuthPage({ mode }: { mode: AuthMode }) {
         });
 
         if (error) {
-          setNotice(error.message || "অ্যাকাউন্ট তৈরি করা যায়নি।");
+          const message = error.message || "অ্যাকাউন্ট তৈরি করা যায়নি।";
+          setNotice(message);
+          toast.error(message);
           return;
         }
+
+        const signInURL = new URL("/signin", window.location.origin);
+        signInURL.searchParams.set("callbackURL", callbackURL);
+        signInURL.searchParams.set("notice", "registered");
+        router.replace(`${signInURL.pathname}${signInURL.search}`);
+        return;
       } else {
         const { error } = await authClient.signIn.email({
           email,
           password,
-          callbackURL,
+          callbackURL: addCallbackNotice(callbackURL, "signin-success"),
         });
 
         if (error) {
-          setNotice(error.message || "সাইন ইন করা যায়নি।");
+          const message = error.message || "সাইন ইন করা যায়নি।";
+          setNotice(message);
+          toast.error(message);
           return;
         }
       }
 
-      router.replace(callbackURL);
       router.refresh();
     } catch {
-      setNotice("সার্ভারের সঙ্গে সংযোগ করা যায়নি। আবার চেষ্টা করুন।");
+      const message = "সার্ভারের সঙ্গে সংযোগ করা যায়নি। আবার চেষ্টা করুন।";
+      setNotice(message);
+      toast.error(message);
     } finally {
       setIsSubmitting(false);
     }
+  }
+
+  function handleInvalid(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const field = event.target as HTMLInputElement;
+    const message = field.validity.typeMismatch
+      ? "সঠিক ইমেইল ঠিকানা লিখুন।"
+      : field.validity.tooShort
+        ? "পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে।"
+        : "সব প্রয়োজনীয় তথ্য পূরণ করুন।";
+    setNotice(message);
+    toast.error(message, { id: "auth-validation" });
+    field.focus();
   }
 
   async function handleGoogleSignIn() {
@@ -94,15 +127,19 @@ export default function AuthPage({ mode }: { mode: AuthMode }) {
       const callbackURL = getCallbackURL();
       const { error } = await authClient.signIn.social({
         provider: "google",
-        callbackURL,
+        callbackURL: addCallbackNotice(callbackURL, "google-signin-success"),
         errorCallbackURL: `${window.location.pathname}?callbackURL=${encodeURIComponent(callbackURL)}`,
       });
 
       if (error) {
-        setNotice(error.message || "Google দিয়ে সাইন ইন করা যায়নি।");
+        const message = error.message || "Google দিয়ে সাইন ইন করা যায়নি।";
+        setNotice(message);
+        toast.error(message);
       }
     } catch {
-      setNotice("Google sign-in শুরু করা যায়নি। আবার চেষ্টা করুন।");
+      const message = "Google sign-in শুরু করা যায়নি। আবার চেষ্টা করুন।";
+      setNotice(message);
+      toast.error(message);
     } finally {
       setIsSubmitting(false);
     }
@@ -116,15 +153,19 @@ export default function AuthPage({ mode }: { mode: AuthMode }) {
       const callbackURL = getCallbackURL();
       const { error } = await authClient.signIn.social({
         provider: "github",
-        callbackURL,
+        callbackURL: addCallbackNotice(callbackURL, "github-signin-success"),
         errorCallbackURL: `${window.location.pathname}?callbackURL=${encodeURIComponent(callbackURL)}`,
       });
 
       if (error) {
-        setNotice(error.message || "GitHub দিয়ে সাইন ইন করা যায়নি।");
+        const message = error.message || "GitHub দিয়ে সাইন ইন করা যায়নি।";
+        setNotice(message);
+        toast.error(message);
       }
     } catch {
-      setNotice("GitHub sign-in শুরু করা যায়নি। আবার চেষ্টা করুন।");
+      const message = "GitHub sign-in শুরু করা যায়নি। আবার চেষ্টা করুন।";
+      setNotice(message);
+      toast.error(message);
     } finally {
       setIsSubmitting(false);
     }
@@ -143,7 +184,11 @@ export default function AuthPage({ mode }: { mode: AuthMode }) {
         </p>
 
         <section className="mt-6 rounded-2xl border border-gray-200 bg-white/80 p-5 text-left shadow-sm sm:p-6">
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form
+            className="space-y-4"
+            onInvalid={handleInvalid}
+            onSubmit={handleSubmit}
+          >
             {isSignup && (
               <label className="block text-sm font-medium text-gray-800">
                 নাম

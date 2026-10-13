@@ -92,9 +92,9 @@ const ProductCard = ({ product }: { product: Product }) => {
         <span
           className={`inline-flex items-center text-xs font-semibold px-2 py-1 rounded-md ${
             isUp
-              ? "text-[var(--brand-green)] bg-[var(--brand-green-soft)]"
+              ? "text-rose-600 bg-rose-50"
               : isDown
-                ? "text-rose-600 bg-rose-50"
+                ? "text-[var(--brand-green)] bg-[var(--brand-green-soft)]"
                 : "text-gray-600 bg-gray-50"
           }`}
         >

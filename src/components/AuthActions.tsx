@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
 import { authClient } from "@/lib/auth-client";
 
 export default function AuthActions() {
@@ -61,7 +62,14 @@ export default function AuthActions() {
   async function handleSignOut() {
     setIsSigningOut(true);
     try {
-      await authClient.signOut();
+      const { error } = await authClient.signOut();
+      if (error) {
+        toast.error(error.message || "সাইন আউট করা যায়নি।");
+      } else {
+        toast.success("সাইন আউট সফল হয়েছে।");
+      }
+    } catch {
+      toast.error("সাইন আউট করা যায়নি। আবার চেষ্টা করুন।");
     } finally {
       setIsSigningOut(false);
       setIsMenuOpen(false);

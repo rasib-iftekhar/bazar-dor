@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Noto_Serif_Bengali } from "next/font/google";
+import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import AuthToastEvents from "@/components/AuthToastEvents";
 
 const notoSerifBengali = Noto_Serif_Bengali({
   subsets: ["latin", "bengali"],
@@ -20,6 +23,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col">
         <Navbar />
+        <Suspense fallback={null}>
+          <AuthToastEvents />
+        </Suspense>
+        <Toaster
+          position="top-right"
+          toasterId="default"
+          toastOptions={{ duration: 4000 }}
+        />
         {children}
         <footer className="mt-auto border-t border-gray-200 bg-white">
           <div className="mx-auto flex max-w-[1400px] flex-col gap-2 px-4 py-5 text-sm text-gray-600 sm:flex-row sm:items-center sm:justify-between sm:px-6">
