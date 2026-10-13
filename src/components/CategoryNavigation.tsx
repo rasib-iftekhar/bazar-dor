@@ -3,13 +3,7 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-interface Category {
-  id: string;
-  slug: string;
-  nameBn: string;
-  icon: string;
-}
+import type { Category } from "./Categories";
 
 function CategoryLinks({
   categories,

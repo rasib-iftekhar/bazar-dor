@@ -10,9 +10,7 @@ export interface Product {
   unit: string;
   image: string;
   today: number;
-  yesterday?: number;
   lastWeek?: number;
-  lastMonth?: number;
   change: {
     dir: "up" | "down" | "flat";
     pct: number;

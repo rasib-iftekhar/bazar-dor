@@ -30,14 +30,6 @@ const notices: Record<string, { message: string; type: "error" | "success" }> =
       message: "GitHub দিয়ে সাইন ইন সফল হয়েছে।",
       type: "success",
     },
-    "google-signin-error": {
-      message: "Google দিয়ে সাইন ইন করা যায়নি। আবার চেষ্টা করুন।",
-      type: "error",
-    },
-    "github-signin-error": {
-      message: "GitHub দিয়ে সাইন ইন করা যায়নি। আবার চেষ্টা করুন।",
-      type: "error",
-    },
   };
 
 export default function AuthToastEvents() {
