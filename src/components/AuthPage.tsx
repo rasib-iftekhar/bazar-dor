@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { FaGithub } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 import { useState, type FormEvent } from "react";
 import { authClient } from "@/lib/auth-client";
 
@@ -79,6 +81,50 @@ export default function AuthPage({ mode }: { mode: AuthMode }) {
       router.refresh();
     } catch {
       setNotice("সার্ভারের সঙ্গে সংযোগ করা যায়নি। আবার চেষ্টা করুন।");
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+  async function handleGoogleSignIn() {
+    setNotice("");
+    setIsSubmitting(true);
+
+    try {
+      const callbackURL = getCallbackURL();
+      const { error } = await authClient.signIn.social({
+        provider: "google",
+        callbackURL,
+        errorCallbackURL: `${window.location.pathname}?callbackURL=${encodeURIComponent(callbackURL)}`,
+      });
+
+      if (error) {
+        setNotice(error.message || "Google দিয়ে সাইন ইন করা যায়নি।");
+      }
+    } catch {
+      setNotice("Google sign-in শুরু করা যায়নি। আবার চেষ্টা করুন।");
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+  async function handleGitHubSignIn() {
+    setNotice("");
+    setIsSubmitting(true);
+
+    try {
+      const callbackURL = getCallbackURL();
+      const { error } = await authClient.signIn.social({
+        provider: "github",
+        callbackURL,
+        errorCallbackURL: `${window.location.pathname}?callbackURL=${encodeURIComponent(callbackURL)}`,
+      });
+
+      if (error) {
+        setNotice(error.message || "GitHub দিয়ে সাইন ইন করা যায়নি।");
+      }
+    } catch {
+      setNotice("GitHub sign-in শুরু করা যায়নি। আবার চেষ্টা করুন।");
     } finally {
       setIsSubmitting(false);
     }
@@ -172,23 +218,21 @@ export default function AuthPage({ mode }: { mode: AuthMode }) {
 
           <div className="grid grid-cols-2 gap-2">
             <button
-              className="flex min-w-0 items-center justify-center gap-1.5 rounded-lg border border-gray-200 px-2 py-2.5 text-xs font-semibold text-gray-800 transition hover:bg-gray-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-green)]"
-              onClick={() => setNotice("Google sign-in এখনো সংযুক্ত করা হয়নি।")}
+              className="flex min-w-0 items-center justify-center gap-1.5 rounded-lg border border-gray-200 px-2 py-2.5 text-xs font-semibold text-gray-800 transition hover:bg-gray-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-green)] disabled:cursor-wait disabled:opacity-60"
+              disabled={isSubmitting}
+              onClick={handleGoogleSignIn}
               type="button"
             >
-              <span aria-hidden="true" className="font-bold text-[#4285f4]">
-                G
-              </span>
+              <FcGoogle aria-hidden="true" className="shrink-0" size={16} />
               <span className="truncate">Google দিয়ে চালিয়ে যান</span>
             </button>
             <button
-              className="flex min-w-0 items-center justify-center gap-1.5 rounded-lg border border-gray-200 px-2 py-2.5 text-xs font-semibold text-gray-800 transition hover:bg-gray-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-green)]"
-              onClick={() => setNotice("GitHub sign-in এখনো সংযুক্ত করা হয়নি।")}
+              className="flex min-w-0 items-center justify-center gap-1.5 rounded-lg border border-gray-200 px-2 py-2.5 text-xs font-semibold text-gray-800 transition hover:bg-gray-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--brand-green)] disabled:cursor-wait disabled:opacity-60"
+              disabled={isSubmitting}
+              onClick={handleGitHubSignIn}
               type="button"
             >
-              <span aria-hidden="true" className="font-bold">
-                ◉
-              </span>
+              <FaGithub aria-hidden="true" className="shrink-0" size={16} />
               <span className="truncate">GitHub দিয়ে চালিয়ে যান</span>
             </button>
           </div>

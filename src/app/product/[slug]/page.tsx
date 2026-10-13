@@ -162,9 +162,9 @@ async function ProductDetailContent({
               <p className="text-sm text-gray-500">বাজারভিত্তিক সর্বোচ্চ</p>
             </div>
             <div className="rounded-lg border border-gray-200 bg-white p-4">
-              <p className="text-sm text-gray-600">গত সপ্তাহের দাম</p>
+              <p className="text-sm text-gray-600">গড় দাম</p>
               <p className="mt-1 text-xl font-bold text-[var(--brand-green)]">
-                {toBengaliNumber(product.lastWeek ?? product.today)} টাকা
+                {toBengaliNumber(((lowestPrice+highestPrice) / 2).toFixed(1))} টাকা
               </p>
               <p className="text-sm text-gray-500">
                 প্রতি {getUnitBn(product.unit)}
