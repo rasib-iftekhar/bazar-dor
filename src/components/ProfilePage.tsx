@@ -1,14 +1,13 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState, type FormEvent } from "react";
+import Link from "next/link";
+import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { authClient } from "@/lib/auth-client";
 
 export default function ProfilePage() {
   const { data: session, isPending } = authClient.useSession();
-  const [notice, setNotice] = useState("");
-  const [isSaving, setIsSaving] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -16,36 +15,6 @@ export default function ProfilePage() {
       router.replace("/signin?callbackURL=%2Fprofile&notice=profile-protected");
     }
   }, [isPending, router, session]);
-
-  async function handleUpdate(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const name = String(formData.get("name")).trim();
-
-    if (!name) {
-      const message = "নাম লিখুন।";
-      setNotice(message);
-      toast.error(message);
-      return;
-    }
-
-    setIsSaving(true);
-    setNotice("");
-
-    try {
-      const { error } = await authClient.updateUser({ name });
-      const message = error?.message || "প্রোফাইল আপডেট হয়েছে।";
-      setNotice(message);
-      if (error) toast.error(message);
-      else toast.success(message);
-    } catch {
-      const message = "প্রোফাইল আপডেট করা যায়নি। আবার চেষ্টা করুন।";
-      setNotice(message);
-      toast.error(message);
-    } finally {
-      setIsSaving(false);
-    }
-  }
 
   async function handleSignOut() {
     try {
@@ -107,36 +76,20 @@ export default function ProfilePage() {
 
         <section className="mt-4 rounded-2xl border border-gray-200 bg-white/80 p-5 shadow-sm sm:p-6">
           <h2 className="text-base font-semibold text-gray-900">তথ্য</h2>
-          <form className="mt-4 space-y-3" onSubmit={handleUpdate}>
-            <label className="block text-sm font-medium text-gray-700">
-              নাম
-              <input
-                autoComplete="name"
-                className="mt-1.5 w-full rounded-lg border border-gray-200 bg-[#fbfcfb] px-3 py-2.5 text-sm font-normal outline-none transition focus:border-(--brand-green) focus:ring-2 focus:ring-(--brand-green-ring)"
-                defaultValue={session.user.name}
-                key={session.user.name}
-                maxLength={100}
-                name="name"
-                required
-              />
-            </label>
-            <button
-              className="w-full rounded-lg bg-(--brand-green) px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-(--brand-green-hover) disabled:cursor-wait disabled:opacity-70"
-              disabled={isSaving}
-              type="submit"
-            >
-              {isSaving ? "সংরক্ষণ হচ্ছে..." : "আপডেট"}
-            </button>
-          </form>
-          {notice && (
-            <p
-              aria-live="polite"
-              className="mt-3 text-sm text-gray-600"
-              role="status"
-            >
-              {notice}
-            </p>
-          )}
+          <dl className="mt-4 space-y-3 text-sm">
+            <div>
+              <dt className="text-gray-500">নাম</dt>
+              <dd className="mt-1 font-medium text-gray-900">
+                {session.user.name}
+              </dd>
+            </div>
+          </dl>
+          <Link
+            className="mt-5 inline-flex rounded-lg bg-(--brand-green) px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-(--brand-green-hover)"
+            href="/profile/update"
+          >
+            আপডেট করুন
+          </Link>
         </section>
       </div>
     </main>
