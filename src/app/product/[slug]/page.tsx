@@ -64,6 +64,12 @@ async function ProductDetailContent({
   const highestPrice = marketPrices.length
     ? Math.max(...marketPrices.map((market) => market.max))
     : product.today;
+  const averagePrice = marketPrices.length
+    ? marketPrices.reduce(
+        (total, market) => total + (market.min + market.max) / 2,
+        0,
+      ) / marketPrices.length
+    : product.today;
   const isUp = product.change?.dir === "up" || product.change?.pct > 0;
   const isDown = product.change?.dir === "down" || product.change?.pct < 0;
 
@@ -166,11 +172,10 @@ async function ProductDetailContent({
             <div className="rounded-lg border border-gray-200 bg-white p-4">
               <p className="text-sm text-gray-600">গড় দাম</p>
               <p className="mt-1 text-xl font-bold text-[var(--brand-green)]">
-                {toBengaliNumber(((lowestPrice + highestPrice) / 2).toFixed(1))}{" "}
-                টাকা
+                {toBengaliNumber(averagePrice.toFixed(1))} টাকা
               </p>
               <p className="text-sm text-gray-500">
-                প্রতি {getUnitBn(product.unit)}
+                প্রতি {getUnitBn(product.unit)}-এর হিসাবে
               </p>
             </div>
           </div>
