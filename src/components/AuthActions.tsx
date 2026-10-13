@@ -42,16 +42,16 @@ export default function AuthActions() {
 
   if (!session) {
     return (
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-1 sm:gap-3">
         <Link
           href="/signin"
-          className="text-gray-700 font-medium px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors text-sm sm:text-base"
+          className="whitespace-nowrap rounded-lg px-1.5 py-2 text-xs font-medium text-gray-700 transition-colors hover:bg-gray-100 sm:px-4 sm:text-base"
         >
           সাইন ইন
         </Link>
         <Link
           href="/signup"
-          className="bg-[var(--brand-green)] hover:bg-[var(--brand-green-hover)] text-white font-medium px-5 py-2 rounded-lg transition-colors shadow-sm text-sm sm:text-base"
+          className="whitespace-nowrap rounded-lg bg-[var(--brand-green)] px-2 py-2 text-xs font-medium text-white shadow-sm transition-colors hover:bg-[var(--brand-green-hover)] sm:px-5 sm:text-base"
         >
           সাইন আপ
         </Link>
